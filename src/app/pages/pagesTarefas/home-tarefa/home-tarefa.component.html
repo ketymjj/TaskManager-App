@@ -1,0 +1,59 @@
+
+<div class="container mt-5">
+ <div>
+  <button class="btn btn-success w-100" [routerLink]="['/cadastroTarefa', projetoId]"
+  routerLinkActive="router-link-active"  >Cadastrar novo tarefa</button>
+ </div>
+  <div>
+      <label class="form-label">Pesquisar:</label>
+      <input class="form-control" type="text" placeholder="Qual projeto deseja buscar?" (input)="search($event)"/>
+  </div>
+
+
+
+  <table class="table table-hover table-bordered mt-5">
+      <thead class="table-dark">
+          <tr>
+            <th class="d-none">Id</th>
+              <th>Titulo</th>
+              <th>Descrição</th>
+              <th>Data Conclusao</th>
+              <th>Status</th>
+              <th>Prioridade</th>
+              <th></th>
+          </tr>
+      </thead>
+
+      <tbody>
+        @if (tarefas && tarefas.length > 0) {
+              @for (tarefa of tarefas; track $index) {
+
+                  <tr>
+                    <td class="d-none">{{ tarefa.id }}</td>
+                      <td>{{tarefa.titulo}}</td>
+                      <td>{{tarefa.descricao}}</td>
+                      <td>{{tarefa.dataConclusao}}</td>
+                      <td>{{tarefa.status}}</td>
+                      <td>{{tarefa.prioridade}}</td>
+                      <td>
+
+                          <button class="btn btn-warning mx-2" [routerLink]="['/editarTarefa', tarefa.id]">Editar</button>
+                          <button class="btn btn-info mx-2" [routerLink]="['/detalhesTarefa', tarefa.id]">Detalhes</button>
+                          <button class="btn btn-danger mx-2" (click)="deletar(tarefa.id)" >Excluir</button>
+                          <button class="btn btn-primary mx-2" [routerLink]="['/historicoTarefa', tarefa.id]">Histórico</button>
+                        </td>
+
+                  </tr>
+
+              }
+          }@else {
+              <tr class="text-center">
+                  <td colspan="7">Nenhum tarefa cadastrado</td>
+              </tr>
+          }
+      </tbody>
+  </table>
+  <div class="container mt-5"><button class="btn btn-info w-100" [routerLink]="['/']" routerLinkActive="router-link-active"  >Voltar</button>
+</div>
+
+

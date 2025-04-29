@@ -1,0 +1,52 @@
+
+<div class="container mt-5"><button class="btn btn-success w-100" [routerLink]="['/cadastro']" routerLinkActive="router-link-active"  >Cadastrar novo projeto</button>
+
+  <div>
+      <label class="form-label">Pesquisar:</label>
+      <input class="form-control" type="text" placeholder="Qual projeto deseja buscar?" (input)="search($event)"/>
+  </div>
+
+
+
+  <table class="table table-hover table-bordered mt-5">
+      <thead class="table-dark">
+          <tr>
+            <th class="d-none">Id</th>
+              <th>Nome do Projeto</th>
+              <th>Descrição</th>
+              <th></th>
+          </tr>
+      </thead>
+
+      <tbody>
+        @if (projetos && projetos.length > 0) {
+              @for (projeto of projetos; track $index) {
+
+                  <tr>
+                    <td class="d-none">{{ projeto.id }}</td>
+                      <td>{{projeto.nome}}</td>
+                      <td>{{projeto.descricao}}</td>
+                      <td>
+
+                          <button class="btn btn-warning mx-2" [routerLink]="['/editar', projeto.id]">Editar</button>
+                          <button class="btn btn-info mx-2" [routerLink]="['/detalhes', projeto.id]">Detalhes</button>
+                          <button class="btn btn-danger mx-2" (click)="deletar(projeto.id)" >Excluir</button>
+                          <button class="btn btn-success mx-2"[routerLink]="['/lista', projeto.id]">Cadastrar Tarefas</button>
+
+                      </td>
+
+                  </tr>
+
+              }
+          }@else {
+              <tr class="text-center">
+                  <td colspan="7">Nenhum projeto cadastrado</td>
+              </tr>
+          }
+
+
+      </tbody>
+  </table>
+
+</div>
+
