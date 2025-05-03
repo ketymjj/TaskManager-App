@@ -25,7 +25,7 @@
    <div *ngIf="!loading && historicos.length === 0" class="alert alert-warning">
     Nenhum histórico encontrado para esta tarefa.
   </div>
-   <div class="container mt-5"><button class="btn btn-info w-100" [routerLink]="['/lista', dadosTarefa?.projetoId]"  routerLinkActive="router-link-active"  >Voltar</button>
+   <div class="container mt-5"><button class="btn btn-info w-100" (click)="voltar()">Voltar</button>
  </div>
 
 
