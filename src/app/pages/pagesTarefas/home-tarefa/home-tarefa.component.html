@@ -1,59 +1,74 @@
-
 <div class="container mt-5">
- <div>
-  <button class="btn btn-success w-100" [routerLink]="['/cadastroTarefa', projetoId]"
-  routerLinkActive="router-link-active"  >Cadastrar novo tarefa</button>
- </div>
-  <div>
-      <label class="form-label">Pesquisar:</label>
-      <input class="form-control" type="text" placeholder="Qual projeto deseja buscar?" (input)="search($event)"/>
+  <h1 class="page-title">Tarefas do Projeto</h1>
+
+  <div class="d-grid gap-2 mb-4">
+    <button class="btn btn-postit-secondary w-100" [routerLink]="['/cadastroTarefa', projetoId]">
+      📌 Cadastrar nova tarefa
+    </button>
   </div>
 
+  <div class="post-it-container blue mb-4">
+    <div class="post-it-content">
+      <label class="form-label">Pesquisar:</label>
+      <input class="form-control" type="text" placeholder="Qual tarefa deseja buscar?" (input)="search($event)"/>
+    </div>
+  </div>
 
+  @if (tarefas && tarefas.length > 0) {
+    <div class="row">
+      @for (tarefa of tarefas; track $index) {
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="post-it-container" [ngClass]="getPriorityColor(tarefa.prioridade)">
+            <div class="post-it-content">
+              <h4 class="task-title">{{tarefa.titulo}}</h4>
 
-  <table class="table table-hover table-bordered mt-5">
-      <thead class="table-dark">
-          <tr>
-            <th class="d-none">Id</th>
-              <th>Titulo</th>
-              <th>Descrição</th>
-              <th>Data Conclusao</th>
-              <th>Status</th>
-              <th>Prioridade</th>
-              <th></th>
-          </tr>
-      </thead>
+              <div class="task-description">
+                {{tarefa.descricao | truncate:40}}
+              </div>
 
-      <tbody>
-        @if (tarefas && tarefas.length > 0) {
-              @for (tarefa of tarefas; track $index) {
+              <div class="task-details">
+                <div class="task-detail">
+                  <strong>📅 Data:</strong> {{tarefa.dataConclusao | date:'dd/MM/yyyy'}}
+                </div>
+                <div class="task-detail">
+                  <strong>📊 Status:</strong> {{(tarefa.status)}}
+                </div>
+                <div class="task-detail">
+                  <strong>⚡ Prioridade:</strong> {{(tarefa.prioridade)}}
+                </div>
+              </div>
 
-                  <tr>
-                    <td class="d-none">{{ tarefa.id }}</td>
-                      <td>{{tarefa.titulo}}</td>
-                      <td>{{tarefa.descricao}}</td>
-                      <td>{{tarefa.dataConclusao}}</td>
-                      <td>{{tarefa.status}}</td>
-                      <td>{{tarefa.prioridade}}</td>
-                      <td>
+              <div class="d-flex flex-wrap gap-2 mt-3">
+                <button class="btn btn-postit-sm" [routerLink]="['/editarTarefa', tarefa.id]" title="Editar">
+                  ✏️
+                </button>
+                <button class="btn btn-postit-sm" [routerLink]="['/detalhesTarefa', tarefa.id]" title="Detalhes">
+                  🔍
+                </button>
+                <button class="btn btn-postit-sm btn-danger" (click)="deletar(tarefa.id)" title="Excluir">
+                  🗑️
+                </button>
+                <button class="btn btn-postit-sm" [routerLink]="['/historicoTarefa', tarefa.id]" title="Histórico">
+                  📋
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="post-it-container yellow">
+      <div class="post-it-content text-center">
+        <h4>Nenhuma tarefa cadastrada</h4>
+        <p>Clique no botão acima para criar sua primeira tarefa!</p>
+      </div>
+    </div>
+  }
 
-                          <button class="btn btn-warning mx-2" [routerLink]="['/editarTarefa', tarefa.id]">Editar</button>
-                          <button class="btn btn-info mx-2" [routerLink]="['/detalhesTarefa', tarefa.id]">Detalhes</button>
-                          <button class="btn btn-danger mx-2" (click)="deletar(tarefa.id)" >Excluir</button>
-                          <button class="btn btn-primary mx-2" [routerLink]="['/historicoTarefa', tarefa.id]">Histórico</button>
-                        </td>
-
-                  </tr>
-
-              }
-          }@else {
-              <tr class="text-center">
-                  <td colspan="7">Nenhum tarefa cadastrado</td>
-              </tr>
-          }
-      </tbody>
-  </table>
-  <div class="container mt-5"><button class="btn btn-info w-100" [routerLink]="['/']" routerLinkActive="router-link-active"  >Voltar</button>
+  <div class="mt-4">
+    <button class="btn btn-postit-secondary w-100" [routerLink]="['/']">
+      ↩️ Voltar para Projetos
+    </button>
+  </div>
 </div>
-
-

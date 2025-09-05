@@ -1,34 +1,52 @@
-
-
-
 <div class="container mt-5">
-    <table *ngIf="!loading && historicos.length > 0" class="table table-hover table-bordered mt-5">
-       <thead class="table-dark">
-           <tr>
-             <th class="d-none">Id</th>
-             <th>Campo Alterado</th>
-             <th>Valor Anterior</th>
-             <th>Valor Novo</th>
-             <th>Data de Modificação</th>
-           </tr>
-       </thead>
+  <h1 class="page-title">Histórico de Alterações</h1>
 
-       <tbody>
-         <tr *ngFor="let h of historicos">
-          <td>{{ h.campoAlterado }}</td>
-          <td>{{ h.valorAnterior }}</td>
-          <td>{{ h.valorNovo }}</td>
-          <td>{{ h.dataModificacao | date: 'short' }}</td>
-        </tr>
-       </tbody>
-   </table>
-   <div *ngIf="!loading && historicos.length === 0" class="alert alert-warning">
-    Nenhum histórico encontrado para esta tarefa.
+  <div class="post-it-container blue">
+    <div class="post-it-content">
+      @if (!loading && historicos.length > 0) {
+        <div class="history-cards">
+          <div *ngFor="let h of historicos" class="history-item">
+            <div class="history-header">
+              <span class="history-field">{{ h.campoAlterado }}</span>
+              <span class="history-date">{{ h.dataModificacao | date: 'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+            <div class="history-content">
+              <div class="change-box old-value">
+                <span class="change-label">De:</span>
+                <span class="change-value">{{ h.valorAnterior || '(vazio)' }}</span>
+              </div>
+              <div class="change-arrow">→</div>
+              <div class="change-box new-value">
+                <span class="change-label">Para:</span>
+                <span class="change-value">{{ h.valorNovo || '(vazio)' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (!loading && historicos.length === 0) {
+        <div class="empty-history">
+          <div class="empty-icon">📝</div>
+          <h4>Nenhum histórico encontrado</h4>
+          <p>Não há alterações registradas para esta tarefa.</p>
+        </div>
+      }
+
+      @if (loading) {
+        <div class="loading-history">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p>Carregando histórico...</p>
+        </div>
+      }
+    </div>
   </div>
-   <div class="container mt-5"><button class="btn btn-info w-100" (click)="voltar()">Voltar</button>
- </div>
 
-
-
-
-
+  <div class="mt-4">
+    <button class="btn btn-postit-secondary w-100" (click)="voltar()">
+      ↩️ Voltar para a Lista de Tarefas
+    </button>
+  </div>
+</div>

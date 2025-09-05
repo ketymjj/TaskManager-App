@@ -1,52 +1,53 @@
+<div class="container mt-5">
+    <h1 class="page-title">Gerenciador de Projetos</h1>
 
-<div class="container mt-5"><button class="btn btn-success w-100" [routerLink]="['/cadastro']" routerLinkActive="router-link-active"  >Cadastrar novo projeto</button>
+    <div class="d-grid gap-2 mb-4">
+        <button class="btn btn-postit" [routerLink]="['/cadastro']">
+            📌 Cadastrar novo projeto
+        </button>
+    </div>
 
-  <div>
-      <label class="form-label">Pesquisar:</label>
-      <input class="form-control" type="text" placeholder="Qual projeto deseja buscar?" (input)="search($event)"/>
-  </div>
+    <div class="post-it-container blue mb-4">
+        <div class="post-it-content">
+            <label class="form-label">Pesquisar:</label>
+            <input class="form-control" type="text" placeholder="Qual projeto deseja buscar?" (input)="search($event)"/>
+        </div>
+    </div>
 
+    @if (projetos && projetos.length > 0) {
+        <div class="row">
+            @for (projeto of projetos; track $index) {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="post-it-container green project-card">
+                        <div class="post-it-content">
+                            <h4 class="project-title">{{projeto.nome}}</h4>
+                            <p class="project-description">{{projeto.descricao | truncate:50}}</p>
 
-
-  <table class="table table-hover table-bordered mt-5">
-      <thead class="table-dark">
-          <tr>
-            <th class="d-none">Id</th>
-              <th>Nome do Projeto</th>
-              <th>Descrição</th>
-              <th></th>
-          </tr>
-      </thead>
-
-      <tbody>
-        @if (projetos && projetos.length > 0) {
-              @for (projeto of projetos; track $index) {
-
-                  <tr>
-                    <td class="d-none">{{ projeto.id }}</td>
-                      <td>{{projeto.nome}}</td>
-                      <td>{{projeto.descricao}}</td>
-                      <td>
-
-                          <button class="btn btn-warning mx-2" [routerLink]="['/editar', projeto.id]">Editar</button>
-                          <button class="btn btn-info mx-2" [routerLink]="['/detalhes', projeto.id]">Detalhes</button>
-                          <button class="btn btn-danger mx-2" (click)="deletar(projeto.id)" >Excluir</button>
-                          <button class="btn btn-success mx-2"[routerLink]="['/lista', projeto.id]">Cadastrar Tarefas</button>
-
-                      </td>
-
-                  </tr>
-
-              }
-          }@else {
-              <tr class="text-center">
-                  <td colspan="7">Nenhum projeto cadastrado</td>
-              </tr>
-          }
-
-
-      </tbody>
-  </table>
-
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <button class="btn btn-postit-sm" [routerLink]="['/editar', projeto.id]" title="Editar">
+                                    ✏️
+                                </button>
+                                <button class="btn btn-postit-sm" [routerLink]="['/detalhes', projeto.id]" title="Detalhes">
+                                    🔍
+                                </button>
+                                <button class="btn btn-postit-sm btn-danger" (click)="deletar(projeto.id)" title="Excluir">
+                                    🗑️
+                                </button>
+                                <button class="btn btn-postit-sm" [routerLink]="['/lista', projeto.id]" title="Tarefas">
+                                    ✅
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="post-it-container yellow">
+            <div class="post-it-content text-center">
+                <h4>Nenhum projeto cadastrado</h4>
+                <p>Clique no botão acima para criar seu primeiro projeto!</p>
+            </div>
+        </div>
+    }
 </div>
-

@@ -1,0 +1,148 @@
+.history-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.history-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #6e8efb;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.history-field {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.1rem;
+  color: #444;
+  text-transform: capitalize;
+}
+
+.history-date {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.history-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.change-box {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.old-value {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+
+.new-value {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+
+.change-label {
+  display: block;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.change-value {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.change-arrow {
+  font-size: 1.5rem;
+  color: #6c757d;
+  padding: 0 5px;
+}
+
+.empty-history {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.empty-history h4 {
+  font-family: 'Permanent Marker', cursive;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.empty-history p {
+  font-family: 'Gochi Hand', cursive;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loading-history {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.loading-history p {
+  font-family: 'Gochi Hand', cursive;
+  margin-top: 15px;
+  color: #555;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .history-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .history-content {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .change-arrow {
+    transform: rotate(90deg);
+    padding: 5px 0;
+  }
+}
+.btn-postit-secondary {
+  background-color: #a777e3;
+  border: none;
+  color: #2c1846; /* Texto mais escuro - ajuste este valor se necessário */
+  padding: 12px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold; /* Deixa o texto em negrito */
+}
+
+.btn-postit-secondary:hover {
+  background-color: #9565d0;
+  color: #1a0e2d; /* Texto ainda mais escuro no hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}

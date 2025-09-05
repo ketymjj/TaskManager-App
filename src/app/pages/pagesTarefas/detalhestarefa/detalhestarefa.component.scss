@@ -1,0 +1,19 @@
+.btn-postit-secondary {
+  background-color: #a777e3;
+  border: none;
+  color: #2c1846; /* Texto mais escuro - ajuste este valor se necessário */
+  padding: 12px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-family: 'Permanent Marker', cursive;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold; /* Deixa o texto em negrito */
+}
+
+.btn-postit-secondary:hover {
+  background-color: #9565d0;
+  color: #1a0e2d; /* Texto ainda mais escuro no hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}

@@ -4,11 +4,32 @@ import { CommonModule } from '@angular/common';
 import { ProjetoListar } from '../../models/Projeto';
 import { ProjetoService } from '../../services/projeto.service';
 
+// Pipe integrado diretamente no componente
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'truncate',
+  standalone: true
+})
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, limit: number = 50, completeWords: boolean = true, ellipsis: string = '...'): string {
+    if (!value) return '';
+
+    if (value.length <= limit) return value;
+
+    if (completeWords) {
+      limit = value.substr(0, limit).lastIndexOf(' ');
+      if (limit === -1) limit = 50;
+    }
+
+    return `${value.substr(0, limit)}${ellipsis}`;
+  }
+}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule ],
+  imports: [RouterModule, CommonModule, TruncatePipe], // Adicionei o TruncatePipe aqui
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -17,7 +38,7 @@ export class HomeComponent implements OnInit {
   projetos: ProjetoListar[] = [];
   projetosGeral: ProjetoListar[] = [];
 
-  constructor(private serviceProjeto:ProjetoService){}
+  constructor(private serviceProjeto: ProjetoService){}
 
   ngOnInit(): void {
     this.serviceProjeto.GetProjetos().subscribe({
@@ -31,16 +52,15 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
-  search(event:Event){
-
+  search(event: Event) {
     const target = event.target as HTMLInputElement;
     const value = target.value.toLowerCase();
 
-    this.projetos = this.projetosGeral.filter(projeto =>{
+    this.projetos = this.projetosGeral.filter(projeto => {
       return projeto.nome.toLowerCase().includes(value);
-    })
+    });
   }
+
   carregarTarefas(projetoId: number) {
     this.serviceProjeto.getTarefasPorProjeto(projetoId).subscribe(tarefas => {
       this.projetos = tarefas;
@@ -74,5 +94,4 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
 }

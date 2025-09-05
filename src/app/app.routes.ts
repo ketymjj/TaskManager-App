@@ -24,6 +24,7 @@ export const routes: Routes = [
       {path:'detalhesTarefa/:id', component: DetalhestarefaComponent},
 
       {path:'cadastroTarefa/:id', component: CadastroTarefaComponent},
-      { path: 'historicoTarefa/:id', component: HistoricoTarefaComponent }
+      { path: 'historicoTarefa/:id', component: HistoricoTarefaComponent },
+      { path: 'cadastroTarefa/:projetoId', component: CadastroTarefaComponent }
 
 ];

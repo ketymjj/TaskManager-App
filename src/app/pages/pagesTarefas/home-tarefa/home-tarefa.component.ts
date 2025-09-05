@@ -1,71 +1,126 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TarefaListar } from '../../../models/Tarefa';
 import { TarefaService } from '../../../services/tarefa.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProjetoListar } from '../../../models/Projeto';
 import { ProjetoService } from '../../../services/projeto.service';
+import { TruncatePipe } from '../../home/home.component';
 
 @Component({
   selector: 'app-home-tarefa',
   standalone: true,
-   imports: [RouterModule, CommonModule ],
+  imports: [RouterModule, CommonModule, TruncatePipe], // Adicione o TruncatePipe aqui
   templateUrl: './home-tarefa.component.html',
   styleUrl: './home-tarefa.component.scss'
 })
-export class HomeTarefaComponent {
+export class HomeTarefaComponent implements OnInit {
 
-    tarefas: TarefaListar[] = [];
-    tarefasGeral: TarefaListar[] = [];
-    projetos: ProjetoListar[] = [];
+  tarefas: TarefaListar[] = [];
+  tarefasGeral: TarefaListar[] = [];
+  projetoId!: number;
 
-    projetoId!: number;
+  constructor(
+    private servicetarefa: TarefaService,
+    private serviceProjeto: ProjetoService,
+    private route: ActivatedRoute
+  ) {}
 
+  ngOnInit(): void {
+    this.projetoId = Number(this.route.snapshot.paramMap.get('projetoId'));
+    this.carregarTarefas();
+  }
 
-    constructor(private servicetarefa:TarefaService, private serviceProjeto:ProjetoService,
-       private route: ActivatedRoute){}
-
-       ngOnInit(): void {
-        this.route.params.subscribe((params: { [key: string]: string }) => {
-          this.projetoId = +params['projetoId']; 
-      
-          this.serviceProjeto.getTarefasPorProjeto(this.projetoId).subscribe(tarefas => {
-            this.tarefas = tarefas;
-            this.tarefasGeral = tarefas; 
-            console.log('Tarefas:', tarefas);
-          });
-        });
+  carregarTarefas(): void {
+    this.serviceProjeto.getTarefasPorProjeto(this.projetoId).subscribe({
+      next: (tarefas) => {
+        this.tarefas = tarefas;
+        this.tarefasGeral = tarefas;
+        console.log('Tarefas:', tarefas);
+      },
+      error: (err) => {
+        console.error('Erro ao carregar tarefas:', err);
       }
+    });
+  }
 
-    search(event:Event){
+  search(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const value = target.value.toLowerCase();
 
-      const target = event.target as HTMLInputElement;
-      const value = target.value.toLowerCase();
+    this.tarefas = this.tarefasGeral.filter(tarefa => {
+      return tarefa.titulo.toLowerCase().includes(value);
+    });
+  }
 
-      this.tarefas = this.tarefasGeral.filter(tarefa =>{
-        return tarefa.titulo.toLowerCase().includes(value);
-      })
+  deletar(id: number | undefined): void {
+    if (id === undefined) {
+      console.error('ID inválido para exclusão.');
+      return;
     }
 
-
-    deletar(id: number | undefined): void {
-      if (id === undefined) {
-        console.error('ID inválido para exclusão.');
-        return;
-      }
-
-      if (confirm('Tem certeza que deseja deletar este tarefa?')) {
-        this.servicetarefa.DeletarTarefa(id).subscribe({
-          next: () => {
-            // Atualize a lista sem precisar recarregar a página inteira
-            this.tarefas = this.tarefas.filter(u => u.id !== id);
-            console.log('Tarefa deletado com sucesso.');
-          },
-          error: (err) => {
-            console.error('Erro ao deletar tarefa:', err);
-            alert('Erro ao deletar tarefa.');
-          }
-        });
-      }
+    if (confirm('Tem certeza que deseja deletar esta tarefa?')) {
+      this.servicetarefa.DeletarTarefa(id).subscribe({
+        next: () => {
+          this.tarefas = this.tarefas.filter(u => u.id !== id);
+          this.tarefasGeral = this.tarefasGeral.filter(u => u.id !== id);
+          alert('Tarefa deletada com sucesso.');
+        },
+        error: (err) => {
+          console.error('Erro ao deletar tarefa:', err);
+          alert('Erro ao deletar tarefa.');
+        }
+      });
     }
+  }
+
+  // Métodos auxiliares para o visual de post-it
+  getPriorityColor(prioridade: number): string {
+    switch(prioridade) {
+      case 2: return 'pink'; // Alta
+      case 1: return 'yellow'; // Média
+      case 0: return 'green'; // Baixa
+      default: return 'blue';
+    }
+  }
+
+  getStatusText(status: number): string {
+    switch(status) {
+      case 0: return 'Pendente';
+      case 1: return 'Em Progresso';
+      case 2: return 'Concluída';
+      case 3: return 'Cancelada';
+      default: return 'Desconhecido';
+    }
+  }
+
+  getPrioridadeText(prioridade: number): string {
+    switch(prioridade) {
+      case 0: return 'Baixa';
+      case 1: return 'Média';
+      case 2: return 'Alta';
+      default: return 'Desconhecida';
+    }
+  }
+
+  // Método para obter ícone baseado na prioridade
+  getPriorityIcon(prioridade: number): string {
+    switch(prioridade) {
+      case 2: return '🔥'; // Alta
+      case 1: return '⚡'; // Média
+      case 0: return '🌱'; // Baixa
+      default: return '📌';
+    }
+  }
+
+  // Método para obter ícone baseado no status
+  getStatusIcon(status: number): string {
+    switch(status) {
+      case 0: return '⏳'; // Pendente
+      case 1: return '🔄'; // Em Progresso
+      case 2: return '✅'; // Concluída
+      case 3: return '❌'; // Cancelada
+      default: return '❓';
+    }
+  }
 }
